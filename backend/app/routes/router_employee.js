@@ -18,4 +18,25 @@ router.post("/", (req,res)=>{
     })
 })
 
+// Employee Find All
+router.get("/", (req,res)=>{
+    
+    Employee.find().exec((err,doc)=>{
+        res.send(doc)
+    })
+
+})
+
+// Employee Delete
+router.delete("/:employee_id", (req,res)=>{
+    
+    const employee_id = req.params.employee_id;
+
+    Employee.findByIdAndDelete(employee_id, {userFindAndModify:false}).exec(err=>{
+        if(err) this.console.log(err)
+        res.send("Delete Complete")
+    })
+
+})
+
 module.exports = router

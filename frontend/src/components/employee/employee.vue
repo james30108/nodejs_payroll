@@ -1,3 +1,43 @@
+<script>
+import axios from 'axios';
+
+export default {
+    name: "Employee",
+    data () {
+        return {
+            employee : []
+        }
+    },
+    methods: {
+        find_all () {
+            axios.get("http://localhost:8080/api/employee/")
+            .then((response) => {
+                this.employee = response.data
+                console.log(response.data)
+            })
+            .catch(function (error) {
+                console.log(error);
+            })
+        },
+        delete_one (employee_id) {
+            
+            axios.delete("http://localhost:8080/api/employee/" + employee_id)
+            .then((response) => {
+                this.find_all();
+                console.log(response.data)
+            })
+            .catch(function (error) {
+                console.log(error);
+            })
+            
+        }
+    },
+    mounted () {
+        this.find_all();
+    }
+}
+</script>
+
 <template>
     <title>พนักงาน</title>
     <div class="container-xxl flex-grow-1 container-p-y">
@@ -13,25 +53,18 @@
                     <th>#</th>
                     <th>รหัสประจำตัว</th>
                     <th>ชื่อ</th>
-                    <th>ตำแหน่ง</th>
-                    <th>เงินเดือน</th>
                     <th>จัดการ</th>
                 </tr>
             </thead>
             <tbody class="table-border-bottom-0">
 
-                <tr>
+                <tr v-for="(item, index) in employee">
                     <td></td>
-                    <td></td>
-                    <td></td>
+                    <td>{{ item._id }}</td>
+                    <td>{{ item.name }}</td>
                     <td>
-
-                        <form action="/product_type_edit" method="post">
-                            <input type="hidden" name="product_type_id" value="<%= item._id %>">
-                            <button class="me-1 bg-transparent border-0"><i class="bx bx-edit me-1 font-22 text-primary"></i></button>
-                            <a href="/product_type_delete/<%= item._id %>" onclick="javascript:return confirm('Delete');"><i class="bx bx-trash me-1 font-22 text-primary"></i></a>
-                        </form>
-                
+                        <button class="me-1 bg-transparent border-0"><i class="bx bx-edit me-1 font-22 text-primary"></i></button>
+                        <button @click="delete_one(item._id)" class="me-1 bg-transparent border-0"><i class="bx bx-trash me-1 font-22 text-primary"></i></button> 
                     </td>
                 </tr>
             </tbody>
