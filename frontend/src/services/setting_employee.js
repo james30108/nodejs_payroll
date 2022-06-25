@@ -1,4 +1,4 @@
-import http from "../http-common";
+import http from "../http_common";
 class Employee {
   getAll() {
     return http.get("/employee");

@@ -42,7 +42,7 @@ export default {
     <title>พนักงาน</title>
     <div class="container-xxl flex-grow-1 container-p-y">
         <h4 class="fw-bold py-3 mb-4">พนักงาน</h4>
-        <a href="#/employee_insert" class="btn btn-primary text-white mb-3">เพิ่มพนักงาน</a>
+        <router-link to="/employee_insert" class="btn btn-primary text-white mb-3">เพิ่มพนักงาน</router-link>
         <!-- Basic Bootstrap Table -->
         <div class="card">
         <h5 class="card-header">พนักงาน</h5>
