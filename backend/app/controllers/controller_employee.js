@@ -2,10 +2,10 @@ const multer        = require("multer")
 const fs            = require("fs");
 const Employee      = require("../models/model_employee")
 
-
-
 // Create and Save a new Tutorial
 exports.create = (req, res) => {
+
+  var employee_image = req.file ? req.file.filename : ""
 
   let data = new Employee ({
     employee_name       : req.body.employee_name,
@@ -13,7 +13,7 @@ exports.create = (req, res) => {
     employee_tel        : req.body.employee_tel,
     employee_department : req.body.employee_department,
     employee_address    : req.body.employee_address,
-    employee_image      : "",
+    employee_image      : employee_image,
     published           : true
   })
   Employee.saveEmployee(data, (err)=>{

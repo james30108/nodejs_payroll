@@ -18,29 +18,20 @@ export default {
     methods: {
         submitForm() {
 
-            var data = {
-                employee_name       : this.employee.employee_name,
-                employee_email      : this.employee.employee_email,
-                employee_tel        : this.employee.employee_tel,
-                employee_department : this.employee.employee_department,
-                employee_adress     : this.employee.employee_adress,
-                employee_image      : this.employee.employee_image
-            }
-            const formData = new FormData()
-            formData.append("employee_image", this.employee.employee_image)
+            const formsubmit = document.getElementById('formsubmit')
+            const data = new FormData(formsubmit)
 
-            services_employee.create(formData)
-            //services_employee.create(data)
+            services_employee.create(data)
             .then(function (response) {
                 console.log(response);
             })
             .catch(function (error) {
                 console.log(error);
             })
-/*
-            this.$router.push('/employee')
+
             this.$forceUpdate()
-*/
+            this.$router.push('/employee')
+    
         },
         uploadfile(){
             this.employee.employee_image = this.$refs.file.files[0]
@@ -65,6 +56,7 @@ export default {
             <h5 class="card-header">ข้อมูลส่วนตัว</h5>
 
             <!-- Account -->
+            <form id="formsubmit" @submit.prevent="onSubmit">
             <div class="card-body">
                 <div class="d-flex align-items-start align-items-sm-center gap-4">
                 
@@ -88,6 +80,7 @@ export default {
                             hidden
                             accept="image/png, image/jpeg"
                             ref="file" 
+                            name="employee_image"
                             @change="uploadfile()"
                         />
                         </label>
@@ -111,6 +104,7 @@ export default {
                         type="text"
                         id="employee_name"
                         placeholder="John Doe"
+                        name="employee_name"
                         v-model.trim="employee.employee_name"
                         autofocus
                     />
@@ -122,6 +116,7 @@ export default {
                         type="text"
                         id="employee_email"
                         placeholder="Example@email.com"
+                        name="employee_email"
                         v-model="employee.employee_email"
                     />
                     </div>
@@ -132,12 +127,18 @@ export default {
                         id="employee_tel"
                         class="form-control"
                         v-model.trim="employee.employee_tel"
+                        name="employee_tel"
                         placeholder="0995669878"
                         />
                     </div>
                     <div class="mb-3 col-md-6">
                     <label for="employee_department" class="form-label">ตำแหน่งงาน</label>
-                    <select id="employee_department" class="select2 form-select" v-model.trim="employee.employee_department">
+                    <select 
+                        id="employee_department" 
+                        class="select2 form-select" 
+                        v-model.trim="employee.employee_department"
+                        name="employee_department"
+                    >
                         <option value="">เลือกตำแหน่งงาน</option>
                         <option value="en">โปรแกรมเมอร์</option>
                         <option value="fr">บัญชี</option>
@@ -152,6 +153,7 @@ export default {
                         id="employee_adress" 
                         placeholder="employee_adress" 
                         v-model.trim="employee.employee_adress"
+                        name="employee_adress"
                         />
                     </div>
                 </div>
@@ -161,6 +163,7 @@ export default {
                 </div>
                 
             </div>
+            </form>
             <!-- /Account -->
             </div>
         </div>
