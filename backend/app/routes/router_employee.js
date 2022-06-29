@@ -1,42 +1,36 @@
-const express       = require("express")
-const multer        = require("multer") 
-const fs            = require("fs");
-const Employee      = require("../models/model_employee")
-const router        = express.Router()
+const employee = require("../controllers/controller_employee")
+const multer   = require("multer") // เรียกใข้งาน multer
+const router   = require("express").Router()
 
-// Employee insert
-router.post("/", (req,res)=>{
-
-    let data = new Employee ({
-        employee_name   : req.body.employee_name,
-        employee_email  : req.body.employee_email,
-        published       : true
-    })
-    Employee.saveEmployee(data, (err)=>{
-        if (err) console.log(err)
-        res.status(200).send(data);
-    })
-})
-
-// Employee Find All
-router.get("/", (req,res)=>{
+// Upload File
+const storage_employee = multer.diskStorage({
     
-    Employee.find().exec((err,doc)=>{
-        res.send(doc)
-    })
+    destination:function(req, file, cb) { // การรุบุตำแหน่งที่จะทำการเก็บไฟล์
+        cb(null, "./app/public/assets/img/employees")
+    },
+    filename:function(req, file, cb) { // ระบุชื่อไฟล์ใหม่เพื่อป้องกันการซ้ำกันของชื่อ
+        cb(null, "employee_" + Date.now() + ".jpg")
+    }
 
 })
 
-// Employee Delete
-router.delete("/:employee_id", (req,res)=>{
-    
-    const employee_id = req.params.employee_id;
-
-    Employee.findByIdAndDelete(employee_id, {userFindAndModify:false}).exec(err=>{
-        if(err) this.console.log(err)
-        res.send("Delete Complete")
-    })
-
+const upload_employee = multer({ // เริ่มต้นอัปโหลด
+    storage:storage_employee
 })
+
+// Create a new Tutorial
+router.post("/", upload_employee.single("employee_image"), employee.create)
+// Retrieve all Tutorials
+router.get("/", employee.findAll)
+// Retrieve all published Tutorials
+router.get("/published", employee.findAllPublished)
+// Retrieve a single Tutorial with id
+router.get("/:id", employee.findOne)
+// Update a Tutorial with id
+router.put("/:id", employee.update)
+// Delete a Tutorial with id
+router.delete("/:id", employee.delete)
+// Create a new Tutorial
+router.delete("/", employee.deleteAll)
 
 module.exports = router

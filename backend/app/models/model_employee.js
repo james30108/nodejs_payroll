@@ -11,9 +11,13 @@ mongoose.connect(dbUrl,{
 // ออกแบบโครงสร้างในการจัดเก็บข้อมูล (Schema)
 let employeeSchema = mongoose.Schema(
     {
-        employee_name: String,
-        employee_email: String,
-        published: Boolean
+        employee_name       : String,
+        employee_email      : String,
+        employee_tel        : String,
+        employee_department : String,
+        employee_address    : String,
+        employee_image      : String,
+        published           : Boolean
     },
     { timestamps: true }
 )

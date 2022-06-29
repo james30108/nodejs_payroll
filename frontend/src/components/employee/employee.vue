@@ -16,7 +16,7 @@ export default {
                 console.log(response.data)
             })
             .catch(function (error) {
-                console.log(error);
+                console.log(error)
             })
         },
         delete_one (employee_id) {
@@ -33,7 +33,8 @@ export default {
         }
     },
     mounted () {
-        this.find_all();
+        this.find_all()
+        this.$forceUpdate();
     }
 }
 </script>

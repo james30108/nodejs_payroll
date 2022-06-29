@@ -8,33 +8,49 @@ export default {
             employee: {
                 employee_name       : "John Doe",
                 employee_email      : "Example@gmail.com",
-                employee_phone      : "099-698-5569",
+                employee_tel        : "099-698-5569",
                 employee_department : "",
                 employee_adress     : "",
+                employee_image      : "",
             }
         }
     },
     methods: {
         submitForm() {
-            
+
             var data = {
                 employee_name       : this.employee.employee_name,
                 employee_email      : this.employee.employee_email,
-                employee_phone      : this.employee.employee_phone,
+                employee_tel        : this.employee.employee_tel,
                 employee_department : this.employee.employee_department,
                 employee_adress     : this.employee.employee_adress,
+                employee_image      : this.employee.employee_image
             }
-            services_employee.create(data)
+            const formData = new FormData()
+            formData.append("employee_image", this.employee.employee_image)
+
+            services_employee.create(formData)
+            //services_employee.create(data)
             .then(function (response) {
                 console.log(response);
             })
             .catch(function (error) {
                 console.log(error);
             })
-
+/*
+            this.$router.push('/employee')
+            this.$forceUpdate()
+*/
+        },
+        uploadfile(){
+            this.employee.employee_image = this.$refs.file.files[0]
+            console.log(this.employee)
         }
+
     }
 }
+
+
 </script>
 
 <template>
@@ -42,42 +58,46 @@ export default {
     <title>เพิ่มพนักงาน</title>
     <div class="container-xxl flex-grow-1 container-p-y">
         <h4 class="fw-bold py-3 mb-4"><span class="text-muted fw-light">พนักงาน /</span> เพิ่มพนักงาน</h4>
-
+        {{ JSON.stringify(employee) }}
         <div class="row">
         <div class="col-md-12">
             <div class="card mb-4">
             <h5 class="card-header">ข้อมูลส่วนตัว</h5>
-            <form id="formAccountSettings" method="POST" onsubmit="return false" enctype="multipart/form-data">
+
             <!-- Account -->
             <div class="card-body">
                 <div class="d-flex align-items-start align-items-sm-center gap-4">
-                <img
-                    src="../assets/img/avatars/1.png"
+                
+                    <img
+                    src="../../assets/img/avatars/1.png"
                     alt="user-avatar"
                     class="d-block rounded"
                     height="100"
                     width="100"
                     id="uploadedAvatar"
-                />
-                <div class="button-wrapper">
-                    <label for="upload" class="btn btn-primary me-2 mb-4" tabindex="0">
-                    <span class="d-none d-sm-block">อัปโหลดรูป</span>
-                    <i class="bx bx-upload d-block d-sm-none"></i>
-                    <input
-                        type="file"
-                        id="upload"
-                        class="account-file-input"
-                        hidden
-                        accept="image/png, image/jpeg"
                     />
-                    </label>
-                    <button type="button" class="btn btn-outline-secondary account-image-reset mb-4">
-                    <i class="bx bx-reset d-block d-sm-none"></i>
-                    <span class="d-none d-sm-block">รีเซ็ต</span>
-                    </button>
+            
+                    <div class="button-wrapper">
+                        <label for="file" class="btn btn-primary me-2 mb-4" tabindex="0">
+                        <span class="d-none d-sm-block">อัปโหลดรูป</span>
+                        <i class="bx bx-upload d-block d-sm-none"></i>
+                        <input
+                            type="file"
+                            id="file"
+                            class="account-file-input"
+                            hidden
+                            accept="image/png, image/jpeg"
+                            ref="file" 
+                            @change="uploadfile()"
+                        />
+                        </label>
+                        <button type="button" class="btn btn-outline-secondary account-image-reset mb-4">
+                        <i class="bx bx-reset d-block d-sm-none"></i>
+                        <span class="d-none d-sm-block">รีเซ็ต</span>
+                        </button>
 
-                    <p class="text-muted mb-0">เฉพาะ JPG, GIF หรือ PNG. ขนาดสูงสุด 800K</p>
-                </div>
+                        <p class="text-muted mb-0">เฉพาะ JPG, GIF หรือ PNG. ขนาดสูงสุด 800K</p>
+                    </div>
                 </div>
             </div>
             <hr class="my-0" />
@@ -90,7 +110,6 @@ export default {
                         class="form-control"
                         type="text"
                         id="employee_name"
-                        name="employee_name"
                         placeholder="John Doe"
                         v-model.trim="employee.employee_name"
                         autofocus
@@ -102,24 +121,23 @@ export default {
                         class="form-control"
                         type="text"
                         id="employee_email"
-                        name="employee_email"
                         placeholder="Example@email.com"
                         v-model="employee.employee_email"
                     />
                     </div>
                     <div class="mb-3 col-md-6">
-                    <label class="form-label" for="employee_phone">เบอร์โทรศัพท์</label>
+                    <label class="form-label" for="employee_tel">เบอร์โทรศัพท์</label>
                     <input
                         type="number"
-                        id="employee_phone"
-                        name="employee_phone"
+                        id="employee_tel"
                         class="form-control"
+                        v-model.trim="employee.employee_tel"
                         placeholder="0995669878"
                         />
                     </div>
                     <div class="mb-3 col-md-6">
                     <label for="employee_department" class="form-label">ตำแหน่งงาน</label>
-                    <select id="employee_department" class="select2 form-select">
+                    <select id="employee_department" class="select2 form-select" v-model.trim="employee.employee_department">
                         <option value="">เลือกตำแหน่งงาน</option>
                         <option value="en">โปรแกรมเมอร์</option>
                         <option value="fr">บัญชี</option>
@@ -128,17 +146,22 @@ export default {
                     </div>
                     <div class="mb-3 col-md-12">
                     <label for="employee_adress" class="form-label">ที่อยู่</label>
-                    <input type="text" class="form-control" id="employee_adress" name="employee_adress" placeholder="employee_adress" />
+                    <input 
+                        type="text" 
+                        class="form-control" 
+                        id="employee_adress" 
+                        placeholder="employee_adress" 
+                        v-model.trim="employee.employee_adress"
+                        />
                     </div>
                 </div>
                 <div class="mt-2">
-                    <button type="submit" class="btn btn-primary me-2">บันทึก</button>
+                    <button type="submit" class="btn btn-primary me-2" @click="submitForm">บันทึก</button>
                     <button type="reset" class="btn btn-outline-secondary">ยกเลิก</button>
                 </div>
                 
             </div>
             <!-- /Account -->
-            </form>
             </div>
         </div>
         </div>
