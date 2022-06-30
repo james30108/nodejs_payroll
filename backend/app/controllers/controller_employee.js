@@ -44,6 +44,13 @@ exports.delete = (req, res) => {
   
   const id = req.params.id;
 
+  Employee.findOne({_id:id}).exec((err, delete_file) => {
+    if (delete_file.employee_image != "") {
+        
+      fs.unlinkSync("./app/public/assets/img/employees/" + delete_file.employee_image)
+    }
+  })
+
   Employee.findByIdAndDelete(id, {userFindAndModify:false}).exec(err=>{
       if(err) this.console.log(err)
       res.send("Delete Complete")
