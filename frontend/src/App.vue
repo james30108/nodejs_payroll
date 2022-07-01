@@ -3,7 +3,6 @@ import sidebar from './components/sidebar.vue'
 import navbar from './components/header.vue'
 import content from './components/content.vue'
 
-
 export default {
   name: "Payroll_fontend",
   components: {
@@ -18,12 +17,11 @@ export default {
   },
   methods: {
 
-    /*
     toggle_function (data) {
       this.menu_togle_data = data
       console.log (this.menu_togle_data)
     }
-    */
+    
   }
 }
 </script>
