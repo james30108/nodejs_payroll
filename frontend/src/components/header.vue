@@ -1,10 +1,29 @@
+
+<script>
+export default {
+    name: "Header",
+    data () {
+        return {
+            button_toggle: false,
+        }
+    },
+    methods: {
+        menu_button () {
+            this.button_toggle = !this.button_toggle
+            this.$emit("button_toggle", this.button_toggle)
+        }
+    }
+}
+</script>
+
 <template>
+
     <nav
         class="layout-navbar container-xxl navbar navbar-expand-xl navbar-detached align-items-center bg-navbar-theme"
         id="layout-navbar"
         >
         <div class="layout-menu-toggle navbar-nav align-items-xl-center me-3 me-xl-0 d-xl-none">
-            <a class="nav-item nav-link px-0 me-xl-4" href="javascript:void(0)">
+            <a class="nav-item nav-link px-0 me-xl-4" href="javascript:void(0)" @click="menu_button">
             <i class="bx bx-menu bx-sm"></i>
             </a>
         </div>

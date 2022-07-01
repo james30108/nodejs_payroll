@@ -25,6 +25,11 @@ let menu, animate;
   let menuToggler = document.querySelectorAll('.layout-menu-toggle');
   menuToggler.forEach(item => {
     item.addEventListener('click', event => {
+
+      
+      alert ("use !!")
+
+
       event.preventDefault();
       window.Helpers.toggleCollapsed();
     });

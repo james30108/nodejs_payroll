@@ -1,6 +1,35 @@
+<script>
+export default {
+    name: "Sidebar",
+    props: ["menu_toggle"],
+    data () {
+        return {
+            close_icon: "",
+            sidebar: "",
+        }
+    },
+    methods: {
+        menu_button () {
+            this.button_toggle = !this.button_toggle
+
+        }
+    },
+    mounted () {
+        if (this.menu_toggle == true) {
+            this.close_icon = "layout-menu-expanded"
+            this.sidebar = ""
+        }
+        else {
+            this.close_icon = ""
+            this.sidebar = "sidebar"
+        }
+    }
+}
+</script>
+
 <template>
 
-    <aside id="layout-menu" class="layout-menu menu-vertical menu bg-menu-theme">
+    <aside class="layout-menu menu-vertical menu bg-menu-theme" :class="[close_icon, sidebar]">
         <div class="app-brand demo">
         <a href="/" class="app-brand-link">
             <span class="app-brand-logo demo">
@@ -86,9 +115,30 @@
                 <div data-i18n="Support">พนักงาน</div>
             </router-link>
         </li>
+        <li class="menu-item test">
+            <router-link to="/employee" class="menu-link">
+                <i class="menu-icon tf-icons bx bx-support"></i>
+                <div data-i18n="Support">ทดสอบ</div>
+            </router-link>
+        </li>
 
 
         </ul>
     </aside>
 
+    
+
 </template>
+
+<style scoped>
+    .sidebar {
+        display: none;
+    }
+    @media only screen and (min-width: 768px) {
+    /* For desktop: */
+        .sidebar {
+            display: inline-block;
+        }
+    }
+
+</style>
