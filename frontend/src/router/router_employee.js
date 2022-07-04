@@ -10,7 +10,7 @@ export default [
         component: () => import('../components/employee/employee_insert.vue')
     },
     {
-        path: '/employee_detail/:id',
+        path: '/employee_detail',
         name: 'employee_detail',
         component: () => import('../components/employee/employee_detail.vue')
     },

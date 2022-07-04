@@ -37,7 +37,6 @@ exports.findOne = (req, res) => {
   const id = req.params.id;
 
   Employee.findOne({_id:id}).exec((err, doc) => {
-    //res.render("admin", doc)
     res.send(doc)
   })
   

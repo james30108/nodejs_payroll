@@ -1,5 +1,5 @@
 <script>
-import services_employee from "../../services/setting_employee";
+import services_employee from "../../services/setting_employee"
 
 export default {
     name: "Employee",
@@ -33,21 +33,11 @@ export default {
             
         },
         detail (employee_id) {
-            /*
-            this.$session.start()
-            this.$session.set("employee_detail", employee_id)
-            */
-            this.$router.push('/employee_detail/' + employee_id)
-            /*
-            services_employee.get(employee_id)
-            .then((response) => {
-                console.log(response.data)
-                this.$router.push('/employee_detail')
-            })
-            .catch(function (error) {
-                console.log(error);
-            })
-            */
+
+            sessionStorage.setItem("employee_id", employee_id)
+            sessionStorage.getItem("employee_id")
+            this.$router.push("/employee_detail")
+
         },
     },
     mounted () {
