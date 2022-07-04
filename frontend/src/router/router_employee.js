@@ -9,4 +9,9 @@ export default [
         name: 'employee_insert',
         component: () => import('../components/employee/employee_insert.vue')
     },
+    {
+        path: '/employee_detail/:id',
+        name: 'employee_detail',
+        component: () => import('../components/employee/employee_detail.vue')
+    },
 ]

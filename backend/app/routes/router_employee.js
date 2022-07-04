@@ -18,19 +18,21 @@ const upload_employee = multer({ // เริ่มต้นอัปโหล�
     storage:storage_employee
 })
 
-// Create a new Tutorial
+// Create 
 router.post("/", upload_employee.single("employee_image"), employee.create)
-// Retrieve all Tutorials
+// Retrieve all 
 router.get("/", employee.findAll)
-// Retrieve all published Tutorials
+// Retrieve all published (Search)
 router.get("/published", employee.findAllPublished)
-// Retrieve a single Tutorial with id
+// Retrieve a single with id
 router.get("/:id", employee.findOne)
-// Update a Tutorial with id
+// Into edit page (after redirect)
+router.post("/edit/", employee.edit)
+// Update a with id
 router.put("/:id", employee.update)
-// Delete a Tutorial with id
+// Delete a with id
 router.delete("/:id", employee.delete)
-// Create a new Tutorial
+// Delete all
 router.delete("/", employee.deleteAll)
 
 module.exports = router

@@ -12,15 +12,19 @@ export default {
   },
   data() {
     return {
-        menu_togle_data : false
+        sidebar_status : false
     }
   },
   methods: {
 
-    toggle_function (data) {
-      this.menu_togle_data = data
-      console.log (this.menu_togle_data)
-    }
+    sidebar_open (data) {
+      this.sidebar_status = data
+      console.log (this.sidebar_status)
+    },
+    sidebar_close (data) {
+      this.sidebar_status = data
+      console.log (this.sidebar_status)
+    },
     
   }
 }
@@ -29,9 +33,9 @@ export default {
 <template>
     <div class="layout-wrapper layout-content-navbar">
     <div class="layout-container">
-      <sidebar :menu_toggle="menu_togle_data"/>
+      <sidebar @sidebar_close="sidebar_close" :sidebar_toggle="sidebar_status"/>
       <div class="layout-page">
-        <navbar @button_toggle="toggle_function"/>
+        <navbar @sidebar_open="sidebar_open" :sidebar_toggle="sidebar_status"/>
           <div class="content-wrapper">
             <content/>
           </div>

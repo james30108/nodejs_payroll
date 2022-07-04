@@ -34,6 +34,21 @@ exports.findAll = (req, res) => {
 // Find a single Tutorial with an id
 exports.findOne = (req, res) => {
   
+  const id = req.params.id;
+
+  Employee.findOne({_id:id}).exec((err, doc) => {
+    //res.render("admin", doc)
+    res.send(doc)
+  })
+  
+};
+// Into edit page with an id
+exports.edit = (req, res) => {
+
+  Employee.findOne({_id:req.body.employee_id}).exec((err, doc) => {
+    res.send(doc)
+  })
+  
 };
 // Update a Tutorial by the id in the request
 exports.update = (req, res) => {

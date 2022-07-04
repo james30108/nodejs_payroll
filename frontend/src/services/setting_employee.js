@@ -9,6 +9,9 @@ class Employee {
   create(data) {
     return http.post("/employee", data);
   }
+  edit(id) {
+    return http.post("/employee/edit/", id);
+  }
   update(id, data) {
     return http.put(`/employee/${id}`, data);
   }

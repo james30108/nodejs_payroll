@@ -1,34 +1,41 @@
 <script>
 export default {
     name: "Sidebar",
-    props: ["menu_toggle"],
+    props: ["sidebar_toggle"],
     data () {
         return {
-            close_icon: "",
-            sidebar: "",
+            sidebar_status  : this.sidebar_toggle,
+            close_icon      : "",
+            sidebar         : "sidebar",
         }
     },
-    methods: {
-        menu_button () {
-            this.button_toggle = !this.button_toggle
+    watch: { 
+        sidebar_toggle: function(newVal, oldVal) { // watch it
+            console.log('Prop changed: ', newVal, ' | was: ', oldVal)
+            this.sidebar_status = newVal
+
+            if (newVal == true) {
+                this.close_icon = "layout-menu-expanded"
+                this.sidebar    = ""
+            }
+            else {
+                this.close_icon = ""
+                this.sidebar    = "sidebar"
+
+            }
 
         }
     },
-    mounted () {
-        if (this.menu_toggle == true) {
-            this.close_icon = "layout-menu-expanded"
-            this.sidebar = ""
-        }
-        else {
-            this.close_icon = ""
-            this.sidebar = "sidebar"
+    methods: {
+        sidebar_close () {
+            this.sidebar_status = !this.sidebar_status
+            this.$emit("sidebar_close", this.sidebar_status)
         }
     }
 }
 </script>
 
 <template>
-
     <aside class="layout-menu menu-vertical menu bg-menu-theme" :class="[close_icon, sidebar]">
         <div class="app-brand demo">
         <a href="/" class="app-brand-link">
@@ -90,7 +97,7 @@ export default {
             <span class="app-brand-text demo menu-text fw-bolder ms-2">Demo</span>
         </a>
 
-        <a href="javascript:void(0);" class="layout-menu-toggle menu-link text-large ms-auto d-block d-xl-none">
+        <a href="javascript:void(0);" class="layout-menu-toggle menu-link text-large ms-auto d-block d-xl-none" @click="sidebar_close">
             <i class="bx bx-chevron-left bx-sm align-middle"></i>
         </a>
         </div>
@@ -125,9 +132,6 @@ export default {
 
         </ul>
     </aside>
-
-    
-
 </template>
 
 <style scoped>

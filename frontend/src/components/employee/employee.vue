@@ -1,5 +1,5 @@
 <script>
-import axios from 'axios';
+import services_employee from "../../services/setting_employee";
 
 export default {
     name: "Employee",
@@ -10,7 +10,8 @@ export default {
     },
     methods: {
         find_all () {
-            axios.get("http://localhost:8080/api/employee/")
+
+            services_employee.getAll()
             .then((response) => {
                 this.employee = response.data
                 console.log(response.data)
@@ -21,7 +22,7 @@ export default {
         },
         delete_one (employee_id) {
             
-            axios.delete("http://localhost:8080/api/employee/" + employee_id)
+            services_employee.delete(employee_id)
             .then((response) => {
                 this.find_all();
                 console.log(response.data)
@@ -30,11 +31,28 @@ export default {
                 console.log(error);
             })
             
-        }
+        },
+        detail (employee_id) {
+            /*
+            this.$session.start()
+            this.$session.set("employee_detail", employee_id)
+            */
+            this.$router.push('/employee_detail/' + employee_id)
+            /*
+            services_employee.get(employee_id)
+            .then((response) => {
+                console.log(response.data)
+                this.$router.push('/employee_detail')
+            })
+            .catch(function (error) {
+                console.log(error);
+            })
+            */
+        },
     },
     mounted () {
         this.find_all()
-        this.$forceUpdate();
+        this.$forceUpdate()
     }
 }
 </script>
@@ -61,10 +79,10 @@ export default {
 
                 <tr v-for="(item, index) in employee">
                     <td></td>
-                    <td>{{ item._id }}</td>
+                    <td><button @click="detail(item._id)" class="bg-transparent border-0">{{ item._id }}</button></td>
                     <td>{{ item.name }}</td>
                     <td>
-                        <button class="me-1 bg-transparent border-0"><i class="bx bx-edit me-1 font-22 text-primary"></i></button>
+                        <button @click="edit(item._id)" class="me-1 bg-transparent border-0"><i class="bx bx-edit me-1 font-22 text-primary"></i></button>
                         <button @click="delete_one(item._id)" class="me-1 bg-transparent border-0"><i class="bx bx-trash me-1 font-22 text-primary"></i></button> 
                     </td>
                 </tr>

@@ -2,15 +2,21 @@
 <script>
 export default {
     name: "Header",
+    props: ["sidebar_toggle"],
     data () {
         return {
-            button_toggle: false,
+            sidebar_status  : this.sidebar_toggle,
+        }
+    },
+    watch: { 
+        sidebar_toggle: function(newVal, oldVal) { // watch it
+            this.sidebar_status = newVal
         }
     },
     methods: {
-        menu_button () {
-            this.button_toggle = !this.button_toggle
-            this.$emit("button_toggle", this.button_toggle)
+        sidebar_open () {
+            this.sidebar_status = !this.sidebar_status
+            this.$emit("sidebar_open", this.sidebar_status)
         }
     }
 }
@@ -23,7 +29,7 @@ export default {
         id="layout-navbar"
         >
         <div class="layout-menu-toggle navbar-nav align-items-xl-center me-3 me-xl-0 d-xl-none">
-            <a class="nav-item nav-link px-0 me-xl-4" href="javascript:void(0)" @click="menu_button">
+            <a class="nav-item nav-link px-0 me-xl-4" href="javascript:void(0)" @click="sidebar_open">
             <i class="bx bx-menu bx-sm"></i>
             </a>
         </div>
