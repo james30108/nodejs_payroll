@@ -33,24 +33,52 @@ exports.findAll = (req, res) => {
 };
 // Find a single Tutorial with an id
 exports.findOne = (req, res) => {
-  
-  const id = req.params.id;
+  //console.log (res)
+  const id        = req.params.id;
+  const proxyHost = req.headers["x-forwarded-host"]
+  const host      = proxyHost ? proxyHost : req.headers.host
 
   Employee.findOne({_id:id}).exec((err, doc) => {
-    res.send(doc)
-  })
-  
-};
-// Into edit page with an id
-exports.edit = (req, res) => {
-
-  Employee.findOne({_id:req.body.employee_id}).exec((err, doc) => {
-    res.send(doc)
+    
+    var image = doc.employee_image != "" ? host + "/assets/img/employees/" + doc.employee_image : ""
+    var data = {
+      "data"  : doc,
+      "image" : image
+    }
+    res.send( JSON.stringify(data) )
   })
   
 };
 // Update a Tutorial by the id in the request
 exports.update = (req, res) => {
+
+  if (req.file != null) {
+
+    var employee_image = req.file.filename
+    var path = "./app/public/assets/img/employees/" + req.body.employee_image
+    // Delete Old File
+    if (req.body.employee_image != "" && fs.existsSync(path)) {
+        fs.unlinkSync("./app/public/assets/img/employees/" + req.body.employee_image)
+    }
+      
+  }
+  else {
+    var employee_image = req.body.employee_image
+  }
+
+  let data = {
+    employee_name       : req.body.employee_name,
+    employee_email      : req.body.employee_email,
+    employee_tel        : req.body.employee_tel,
+    employee_department : req.body.employee_department,
+    employee_address    : req.body.employee_address,
+    employee_image      : employee_image,
+  }
+  
+  Employee.findByIdAndUpdate(req.params.id, data, {userFindAndModify:false}).exec((err, doc) =>{
+    res.send(doc)
+    console.log (req.body)
+  })
   
 };
 // Delete a Tutorial with the specified id in the request
@@ -59,8 +87,7 @@ exports.delete = (req, res) => {
   const id = req.params.id;
 
   Employee.findOne({_id:id}).exec((err, delete_file) => {
-    if (delete_file.employee_image != "") {
-        
+    if (delete_file.employee_image != "") { 
       fs.unlinkSync("./app/public/assets/img/employees/" + delete_file.employee_image)
     }
   })

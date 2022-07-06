@@ -10,7 +10,7 @@ export default {
                 employee_email      : "Example@gmail.com",
                 employee_tel        : "099-698-5569",
                 employee_department : "",
-                employee_adress     : "",
+                employee_address    : "",
                 employee_image      : "",
             }
         }
@@ -146,14 +146,14 @@ export default {
                     </select>
                     </div>
                     <div class="mb-3 col-md-12">
-                    <label for="employee_adress" class="form-label">ที่อยู่</label>
+                    <label for="employee_address" class="form-label">ที่อยู่</label>
                     <input 
                         type="text" 
                         class="form-control" 
-                        id="employee_adress" 
-                        placeholder="employee_adress" 
-                        v-model.trim="employee.employee_adress"
-                        name="employee_adress"
+                        id="employee_address" 
+                        placeholder="employee_address" 
+                        v-model.trim="employee.employee_address"
+                        name="employee_address"
                         />
                     </div>
                 </div>

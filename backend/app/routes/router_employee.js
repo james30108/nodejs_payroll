@@ -26,10 +26,8 @@ router.get("/", employee.findAll)
 router.get("/published", employee.findAllPublished)
 // Retrieve a single with id
 router.get("/:id", employee.findOne)
-// Into edit page (after redirect)
-router.post("/edit/", employee.edit)
 // Update a with id
-router.put("/:id", employee.update)
+router.put("/:id", upload_employee.single("employee_image_new"), employee.update)
 // Delete a with id
 router.delete("/:id", employee.delete)
 // Delete all
