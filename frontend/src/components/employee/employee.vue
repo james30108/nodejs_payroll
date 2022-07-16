@@ -56,28 +56,59 @@ export default {
         <div class="card">
         <h5 class="card-header">พนักงาน</h5>
         <div class="table-responsive text-nowrap">
-            <table class="table">
+            <table class="table mb-3">
             <thead>
                 <tr>
                     <th>#</th>
-                    <th>รหัสประจำตัว</th>
                     <th>ชื่อ</th>
+                    <th>เบอร์โทร</th>
+                    <th>ตำแหน่ง</th>
                     <th>จัดการ</th>
                 </tr>
             </thead>
-            <tbody class="table-border-bottom-0">
+            <tbody class="table-border-bottom-0 ">
 
                 <tr v-for="(item, index) in employee">
-                    <td></td>
-                    <td><button @click="detail(item._id)" class="bg-transparent border-0">{{ item._id }}</button></td>
-                    <td>{{ item.name }}</td>
+                    <td>{{index + 1}}</td>
+                    <td><button @click="detail(item._id)" class="bg-transparent border-0 text-primary">{{ item.employee_name }}</button></td>
+                    <td>{{ item.employee_tel }}</td>
+                    <td>{{ item.employee_department }}</td>
                     <td>
-                        <button @click="edit(item._id)" class="me-1 bg-transparent border-0"><i class="bx bx-edit me-1 font-22 text-primary"></i></button>
                         <button @click="delete_one(item._id)" class="me-1 bg-transparent border-0"><i class="bx bx-trash me-1 font-22 text-primary"></i></button> 
                     </td>
                 </tr>
             </tbody>
             </table>
+
+            <nav aria-label="Page navigation">
+                <ul class="pagination justify-content-end">
+                <li class="page-item prev">
+                    <a class="page-link" href="javascript:void(0);"
+                    ><i class="tf-icon bx bx-chevrons-left"></i
+                    ></a>
+                </li>
+                <li class="page-item">
+                    <a class="page-link" href="javascript:void(0);">1</a>
+                </li>
+                <li class="page-item">
+                    <a class="page-link" href="javascript:void(0);">2</a>
+                </li>
+                <li class="page-item active">
+                    <a class="page-link" href="javascript:void(0);">3</a>
+                </li>
+                <li class="page-item">
+                    <a class="page-link" href="javascript:void(0);">4</a>
+                </li>
+                <li class="page-item">
+                    <a class="page-link" href="javascript:void(0);">5</a>
+                </li>
+                <li class="page-item next">
+                    <a class="page-link" href="javascript:void(0);"
+                    ><i class="tf-icon bx bx-chevrons-right"></i
+                    ></a>
+                </li>
+                </ul>
+            </nav>
         </div>
         </div>
 

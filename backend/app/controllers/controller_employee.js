@@ -2,6 +2,13 @@ const multer        = require("multer")
 const fs            = require("fs");
 const Employee      = require("../models/model_employee")
 
+// For Pagination
+const getPagination = (page, size) => {
+  const limit = size ? + size : 3;
+  const offset = page ? page * limit : 0;
+  return { limit, offset };
+};
+
 // Create and Save a new Tutorial
 exports.create = (req, res) => {
 
@@ -26,7 +33,9 @@ exports.create = (req, res) => {
 // Retrieve all Tutorials from the database.
 exports.findAll = (req, res) => {
   
-  Employee.find().exec((err,doc)=>{
+  // limit คือ จำนวนที่แสดง 
+  // sort คือ การเรียงข้อมูล
+  Employee.find().limit(2).sort("_id").exec((err,doc)=>{
     res.send(doc)
   })
 

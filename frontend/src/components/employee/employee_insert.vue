@@ -6,9 +6,9 @@ export default {
     data () {
         return {
             employee: {
-                employee_name       : "John Doe",
-                employee_email      : "Example@gmail.com",
-                employee_tel        : "099-698-5569",
+                employee_name       : "",
+                employee_email      : "",
+                employee_tel        : "",
                 employee_department : "",
                 employee_address    : "",
                 employee_image      : "",
@@ -36,6 +36,9 @@ export default {
         uploadfile(){
             this.employee.employee_image = this.$refs.file.files[0]
             console.log(this.employee)
+        },
+        cancelForm(){
+            this.$router.push("/employee")
         }
 
     }
@@ -123,7 +126,7 @@ export default {
                     <div class="mb-3 col-md-6">
                     <label class="form-label" for="employee_tel">เบอร์โทรศัพท์</label>
                     <input
-                        type="number"
+                        type="text"
                         id="employee_tel"
                         class="form-control"
                         v-model.trim="employee.employee_tel"
@@ -140,9 +143,9 @@ export default {
                         name="employee_department"
                     >
                         <option value="">เลือกตำแหน่งงาน</option>
-                        <option value="en">โปรแกรมเมอร์</option>
-                        <option value="fr">บัญชี</option>
-                        <option value="de">ธุรการ</option>
+                        <option value="programer">โปรแกรมเมอร์</option>
+                        <option value="accountance">บัญชี</option>
+                        <option value="sale">ฝ่ายขาย</option>
                     </select>
                     </div>
                     <div class="mb-3 col-md-12">
@@ -159,7 +162,7 @@ export default {
                 </div>
                 <div class="mt-2">
                     <button type="submit" class="btn btn-primary me-2" @click="submitForm">บันทึก</button>
-                    <button type="reset" class="btn btn-outline-secondary">ยกเลิก</button>
+                    <button type="reset" class="btn btn-outline-secondary" @click="cancelForm">ยกเลิก</button>
                 </div>
                 
             </div>

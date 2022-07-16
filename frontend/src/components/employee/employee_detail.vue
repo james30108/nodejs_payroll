@@ -7,7 +7,7 @@ export default {
         return {
             id                  : sessionStorage.getItem("employee_id"), // session
             employee            : [],
-            employee_image      : "1112345",
+            employee_image      : "",
             isButtonDisabled    : true,
             
         }
@@ -37,26 +37,23 @@ export default {
             .catch(function (error) {
                 console.log(error);
             })
-            /*
+            
             this.$forceUpdate()
             this.$router.push('/employee')
-            */
+            
         },
         confirm () {
             this.isButtonDisabled = !this.isButtonDisabled
         },
-        /*
-        uploadfile(){
-            this.employee.employee_image = this.$refs.file.files[0]
-            console.log(this.employee)
+        cancelForm(){
+            this.$router.push("/employee")
         }
-        */
     },
     mounted () {
         services_employee.get(this.id)
         .then((response) => {
             this.employee = response.data.data
-            //this.employee_image = response.image != "" ? response.image : "../../assets/img/avatars/1.png"
+            this.employee_image = response.data.image != "" ? "http://" + response.data.image : "../../assets/img/avatars/1.png"
 
             console.log(response.data)
         })
@@ -72,7 +69,6 @@ export default {
     <title>แก้ไขข้อมูลพนักงาน</title>
     <div class="container-xxl flex-grow-1 container-p-y">
         <h4 class="fw-bold py-3 mb-4"><span class="text-muted fw-light">พนักงาน /</span> แก้ไขข้อมูลพนักงาน</h4>
-        {{ JSON.stringify(employee_image) }}
         <div class="row">
         <div class="col-md-12">
             <div class="card mb-4">
@@ -183,7 +179,7 @@ export default {
                     </div>
                     <div class="mt-2">
                         <button type="submit" class="btn btn-primary me-2" @click="submitForm_update">บันทึกการเปลี่ยนแปลง</button>
-                        <button type="reset" class="btn btn-outline-secondary">ยกเลิก</button>
+                        <button class="btn btn-outline-secondary" @click="cancelForm">ยกเลิก</button>
                     </div>
                     
                 </div>
