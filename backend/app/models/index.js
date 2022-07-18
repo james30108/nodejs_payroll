@@ -1,9 +1,18 @@
-const dbConfig      = require("../config/db.config.js");
-const mongoose      = require("mongoose");
-mongoose.Promise    = global.Promise;
+const database_config   = require("../config/db.config.js")
+const mongoose          = require("mongoose")
+const mongoosePaginate  = require("mongoose-paginate-v2")
+mongoose.Promise        = global.Promise;
 
-const db            = {};
-db.mongoose         = mongoose;
-db.url              = dbConfig.url;
-db.employee         = require("./model_employee.js")(mongoose);
-module.exports      = db;
+const database     = {}
+database.mongoose  = mongoose
+database.url       = database_config.url
+database.employee  = require("./model_employee.js") (mongoose, mongoosePaginate)
+module.exports     = database;
+
+// สร้างฐานข้อมูล
+mongoose.connect(database.url, {
+    
+    useNewUrlParser: true, 
+    useUnifiedTopology: true
+
+}).catch(err=>console.log(err))

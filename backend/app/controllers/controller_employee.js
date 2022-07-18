@@ -1,13 +1,16 @@
-const multer        = require("multer") 
 const fs            = require("fs");
-const Employee      = require("../models/model_employee")
+const Employee      = require("../models/").employee
 
-// For Pagination
-const getPagination = (page, size) => {
-  const limit = size ? + size : 3;
-  const offset = page ? page * limit : 0;
-  return { limit, offset };
-};
+// Paginate
+const pagination_get = (page, total_page) => {
+  var front_n_back   = 2
+  var first          = Number(page) - front_n_back
+  var last           = Number(page) + front_n_back
+  
+  if ( first <= 1)           { first = 1}
+  if ( last >= total_page )  { last  = total_page }
+  return {first, last}
+}
 
 // Create and Save a new Tutorial
 exports.create = (req, res) => {
@@ -23,20 +26,39 @@ exports.create = (req, res) => {
     employee_image      : employee_image,
     published           : true
   })
-  Employee.saveEmployee(data, (err)=>{
+
+  data.save().then(data => {
+    res.status(200).send(data)
+    console.log (req.body)
+  })
+  /*
+  Employee.save(data, (err)=>{
       if (err) console.log(err)
       res.status(200).send(data)
       console.log (req.body)
   })
-
+  */
 };
 // Retrieve all Tutorials from the database.
 exports.findAll = (req, res) => {
   
-  // limit คือ จำนวนที่แสดง 
-  // sort คือ การเรียงข้อมูล
-  Employee.find().limit(2).sort("_id").exec((err,doc)=>{
-    res.send(doc)
+
+  const options = {
+    page  : req.query.page,
+    limit : req.query.size
+  }
+
+  Employee.paginate({}, options).then(function (result) {
+
+    const {first, last} =  pagination_get (req.query.page, result.totalPages)
+
+    res.send({
+      totalItems   : result.totalDocs,
+      employee     : result.docs,
+      total_page   : result.totalPages,
+      page_start   : first,
+      page_end     : last,
+    })
   })
 
 };

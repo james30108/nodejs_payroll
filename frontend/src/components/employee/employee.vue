@@ -5,15 +5,42 @@ export default {
     name: "Employee",
     data () {
         return {
-            employee : []
+            employee        : [],
+            page            : 1, // หมายเลขหน้า
+            page_start      : 1, 
+            page_end        : null, 
+            size            : 3, // จำนวนข้อมูลเริ่มต้น
+            size_option     : [3, 6, 9], // จำนวนข้อมูลที่สามารถเลือกแสดง
+            page_option     : [],
         }
     },
     methods: {
+        get_parameter (page, size) {
+            let params = {}
+            if (page) {
+                params["page"] = page
+            }
+            if (size) {
+                params["size"] = size
+            }
+            return params
+        },
         find_all () {
-
-            services_employee.getAll()
+            const params = this.get_parameter (
+                this.page,
+                this.size
+            )
+            services_employee.getAll(params)
             .then((response) => {
-                this.employee = response.data
+                this.employee     = response.data.employee
+                this.total_page   = response.data.total_page
+                this.page_start   = response.data.page_start
+                this.page_end     = response.data.page_end
+                
+                this.page_option  = []
+                for (let i = this.page_start; i <= this.page_end ; i++) {
+                    this.page_option.push(i)
+                }
                 console.log(response.data)
             })
             .catch(function (error) {
@@ -24,11 +51,11 @@ export default {
             
             services_employee.delete(employee_id)
             .then((response) => {
-                this.find_all();
+                this.find_all()
                 console.log(response.data)
             })
             .catch(function (error) {
-                console.log(error);
+                console.log(error)
             })
             
         },
@@ -39,16 +66,28 @@ export default {
             this.$router.push("/employee_detail")
 
         },
+        size_change (event) {
+            this.size = event.target.value
+            this.page = 1
+            this.find_all ()
+        },
+        page_change (value) {
+            this.page = value
+            this.find_all ()
+        },
     },
     mounted () {
-        this.find_all()
-        this.$forceUpdate()
+        this.find_all ()
+        this.$forceUpdate ()
     }
 }
 </script>
 
 <template>
     <title>พนักงาน</title>
+    {{ JSON.stringify(page_option) }}
+    {{ JSON.stringify(page_start) }}
+    {{ JSON.stringify(page_end) }}
     <div class="container-xxl flex-grow-1 container-p-y">
         <h4 class="fw-bold py-3 mb-4">พนักงาน</h4>
         <router-link to="/employee_insert" class="btn btn-primary text-white mb-3">เพิ่มพนักงาน</router-link>
@@ -79,36 +118,51 @@ export default {
                 </tr>
             </tbody>
             </table>
-
-            <nav aria-label="Page navigation">
+            <div class="d-flex">
+            <div class="mb-3 col-md-2 mx-3">
+            <select 
+                class="form-select" 
+                v-model="size" 
+                @change="size_change($event)"
+            >
+                <option v-for="size in size_option" :key="size" :value="size">{{ size }}</option>
+            </select>
+            </div>
+            <div class="mb-3 col-md-6 ms-auto mx-3">
+                <b-pagination
+        v-model="page"
+        :total-rows="count"
+        :per-page="pageSize"
+        prev-text="Prev"
+        next-text="Next"
+        @change="handlePageChange"
+      ></b-pagination>
+                <nav aria-label="Page navigation">
                 <ul class="pagination justify-content-end">
-                <li class="page-item prev">
+                <li class="page-item prev" @click="page_change (1)" >
                     <a class="page-link" href="javascript:void(0);"
                     ><i class="tf-icon bx bx-chevrons-left"></i
                     ></a>
                 </li>
-                <li class="page-item">
-                    <a class="page-link" href="javascript:void(0);">1</a>
+                <li class="page-item"
+                    v-for="number in page_option"
+                    
+                    :class="{active: number === page}"
+                    @click="page_change (number)"
+                >
+                    <a class="page-link" href="javascript:void(0);">{{ number }}</a>
                 </li>
-                <li class="page-item">
-                    <a class="page-link" href="javascript:void(0);">2</a>
-                </li>
-                <li class="page-item active">
-                    <a class="page-link" href="javascript:void(0);">3</a>
-                </li>
-                <li class="page-item">
-                    <a class="page-link" href="javascript:void(0);">4</a>
-                </li>
-                <li class="page-item">
-                    <a class="page-link" href="javascript:void(0);">5</a>
-                </li>
-                <li class="page-item next">
+                <li class="page-item next" @click="page_change (total_page)">
                     <a class="page-link" href="javascript:void(0);"
                     ><i class="tf-icon bx bx-chevrons-right"></i
                     ></a>
                 </li>
                 </ul>
             </nav>
+            </div>
+            
+            </div>
+            
         </div>
         </div>
 

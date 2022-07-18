@@ -138,7 +138,7 @@ export default {
     .sidebar {
         display: none;
     }
-    @media only screen and (min-width: 768px) {
+    @media only screen and (min-width: 1080px) {
     /* For desktop: */
         .sidebar {
             display: inline-block;
