@@ -38,17 +38,25 @@ exports.create = (req, res) => {
       console.log (req.body)
   })
   */
-};
+}
 // Retrieve all Tutorials from the database.
 exports.findAll = (req, res) => {
   
+  const condition = {}
+
+  if (req.query.employee_name) condition["employee_name"]              = req.query.employee_name
+  if (req.query.employee_department) condition["employee_department"]  = req.query.employee_department
+  if (req.query.employee_tel) condition["employee_tel"]                = req.query.employee_tel
+  
+  const check = Object.entries(condition).length === 0
+  const page  = (check) ? req.query.page : 1
 
   const options = {
-    page  : req.query.page,
+    page  : page,
     limit : req.query.size
   }
 
-  Employee.paginate({}, options).then(function (result) {
+  Employee.paginate(condition, options).then(function (result) {
 
     const {first, last} =  pagination_get (req.query.page, result.totalPages)
 
@@ -56,12 +64,14 @@ exports.findAll = (req, res) => {
       totalItems   : result.totalDocs,
       employee     : result.docs,
       total_page   : result.totalPages,
+      page         : page,
       page_start   : first,
       page_end     : last,
     })
+
   })
 
-};
+}
 // Find a single Tutorial with an id
 exports.findOne = (req, res) => {
   //console.log (res)
@@ -79,7 +89,7 @@ exports.findOne = (req, res) => {
     res.send( JSON.stringify(data) )
   })
   
-};
+}
 // Update a Tutorial by the id in the request
 exports.update = (req, res) => {
 
@@ -111,7 +121,7 @@ exports.update = (req, res) => {
     console.log (req.body)
   })
   
-};
+}
 // Delete a Tutorial with the specified id in the request
 exports.delete = (req, res) => {
   
@@ -128,12 +138,12 @@ exports.delete = (req, res) => {
       res.send("Delete Complete")
   })
 
-};
+}
 // Delete all Tutorials from the database.
 exports.deleteAll = (req, res) => {
   
-};
+}
 // Find all published Tutorials
 exports.findAllPublished = (req, res) => {
   
-};
+}
