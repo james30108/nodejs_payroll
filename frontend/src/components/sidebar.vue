@@ -123,9 +123,9 @@ export default {
             </router-link>
         </li>
         <li class="menu-item test">
-            <router-link to="/employee" class="menu-link">
+            <router-link to="/department" class="menu-link">
                 <i class="menu-icon tf-icons bx bx-support"></i>
-                <div data-i18n="Support">ทดสอบ</div>
+                <div data-i18n="Support">ตำแหน่ง</div>
             </router-link>
         </li>
 

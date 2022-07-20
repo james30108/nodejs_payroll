@@ -10,6 +10,11 @@ const router = createRouter({
       name: 'home',
       component: () => import('../components/home.vue')
     },
+    {
+      path: '/department',
+      name: 'department',
+      component: () => import('../components/department/department.vue')
+    },
     ...router_employee
   ]
 })

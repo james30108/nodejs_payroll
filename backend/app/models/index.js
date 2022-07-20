@@ -7,6 +7,7 @@ const database     = {}
 database.mongoose  = mongoose
 database.url       = database_config.url
 database.employee  = require("./model_employee.js") (mongoose, mongoosePaginate)
+database.department= require("./model_department.js") (mongoose, mongoosePaginate)
 module.exports     = database;
 
 // สร้างฐานข้อมูล
