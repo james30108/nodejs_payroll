@@ -1,5 +1,5 @@
 const department = require("../controllers/controller_department")
-const router   = require("express").Router()
+const router     = require("express").Router()
 
 // Create 
 router.post("/", department.create)

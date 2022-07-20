@@ -5,30 +5,50 @@ export default {
     name: "Department",
     data () {
         return {
-            button : "บันทึก",
-            department : {
+            button              : "บันทึก",
+            department          : [],
+            upline_option       : ["", "none"],
+            department_option   : {
                 department_name   : null,
                 department_upline : null,
-                department_salary : null,
+                department_salary : "",
             },
-            methods: {
-                save() {
-
-                    services_department.create(department)
-                    .then(function (response) {
-                        console.log(response);
-                    })
-                    .catch(function (error) {
-                        console.log(error);
-                    })
-
-                    this.$forceUpdate()
-                    this.$router.push('/department')
-            
-                },
-            }
         }
     },
+    methods: {
+        save () {
+
+            services_department.create(this.department_option)
+            .then(function (response) {
+                console.log(response)
+            })
+            .catch(function (error) {
+                console.log(error);
+            })  
+
+            this.department_option = {
+                department_name: "",
+                department_upline: "",
+                department_salary: ""
+            }; 
+            this.$forceUpdate()
+        },
+        find_all () {
+
+            services_employee.getAll()
+            .then((response) => {
+                this.department   = response.data.department
+                this.page_option  = []
+                for (let i = this.page_start; i <= this.page_end ; i++) {
+                    this.page_option.push(i)
+                }
+                console.log(response.data)
+            })
+            .catch(function (error) {
+                console.log(error)
+            })
+        },
+    }
 }
 
 </script>
@@ -42,6 +62,7 @@ export default {
         </div>
         <div class="card mb-3">
             <div class="card-body">
+                <form id="formsubmit" @submit.prevent="save">
                 <div class="row">
                     <div class="mb-3 col-md-4">
                         <label for="department_name" class="form-label">ตำแหน่ง</label>
@@ -51,7 +72,7 @@ export default {
                             id="department_name"
                             placeholder="ระบุตำแหน่ง"
                             name="department_name"
-                            v-model.trim="department.department_name"
+                            v-model.trim="department_option.department_name"
                             autofocus
                         />
                         </div>
@@ -61,13 +82,12 @@ export default {
                             id="department_upline" 
                             class="select2 form-select" 
                             name="department_upline"
+                            v-model="department_option.department_upline"
                             required
                         >
-                            <option value="">เลือกสายงาน</option>
-                            <option value="none">ตำแหน่งสูงสุด</option>
-                            <option value="programer">โปรแกรมเมอร์</option>
-                            <option value="accountance">บัญชี</option>
-                            <option value="sale">ฝ่ายขาย</option>
+                            <option :value="upline_option[0]">เลือกสายงาน</option>
+                            <option :value="upline_option[1]">ตำแหน่งสูงสุด</option>
+                            <option :value="upline_option[2]">โปรแกรมเมอร์</option>
                         </select>
                         </div>
                         <div class="mb-3 col-md-4">
@@ -78,17 +98,18 @@ export default {
                             class="form-control"
                             name="department_salary"
                             placeholder="เงินเดือนประจำตำแหน่ง"
-                            v-model.trim="department.department_salary"
+                            v-model.trim="department_option.department_salary"
                             />
                         </div>
                         <div class="mb-3 col-md-6">
 
                     </div>
                     <div class="mt-2">
-                        <button type="submit" class="btn btn-primary me-2" @click="save" >{{ button }}</button>
+                        <button type="submit" class="btn btn-primary me-2">{{ button }}</button>
                         <button type="reset" class="btn btn-outline-secondary" >ยกเลิก</button>
                     </div>
                 </div>
+                </form>
             </div>
         </div>
         

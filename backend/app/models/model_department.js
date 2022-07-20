@@ -5,7 +5,7 @@ module.exports = (mongoose, mongoosePaginate) => {
         {
             department_name   : String,
             department_upline : String,
-            department_salary : String
+            department_salary : Number
         },
         { timestamps: true }
     )

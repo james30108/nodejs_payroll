@@ -4,6 +4,8 @@ const Department    = require("../models").department
 // Create and Save a new Tutorial
 exports.create = (req, res) => {
 
+  console.log (req.body)
+  
   let data = new Department ({
     department_name   : req.body.department_name,
     department_upline : req.body.department_upline,
@@ -12,7 +14,6 @@ exports.create = (req, res) => {
 
   data.save().then(data => {
     res.status(200).send(data)
-    console.log (req.body)
   })
   
 }
