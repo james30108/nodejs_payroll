@@ -1,7 +1,7 @@
 import http from "../http_common";
 class Employee {
-  getAll(params) {
-    return http.get("/employee", { params });
+  getAll() {
+    return http.get("/employee");
   }
   get(id) {
     return http.get(`/employee/${id}`);

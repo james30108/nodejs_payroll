@@ -4,14 +4,13 @@ const Department    = require("../models").department
 // Create and Save a new Tutorial
 exports.create = (req, res) => {
 
-  console.log (req.body)
-  
   let data = new Department ({
     department_name   : req.body.department_name,
     department_upline : req.body.department_upline,
-    dapartment_salary : req.body.dapartment_salary,
+    department_salary : req.body.department_salary
   })
-
+  console.log (data)
+  
   data.save().then(data => {
     res.status(200).send(data)
   })
@@ -19,8 +18,9 @@ exports.create = (req, res) => {
 }
 // Retrieve all Tutorials from the database.
 exports.findAll = (req, res) => {
-  
-
+  Department.find().exec((err, doc) => {
+    res.send(doc)
+  })
 }
 // Find a single Tutorial with an id
 exports.findOne = (req, res) => {
@@ -35,7 +35,10 @@ exports.update = (req, res) => {
 }
 // Delete a Tutorial with the specified id in the request
 exports.delete = (req, res) => {
-  
 
+  Department.findByIdAndDelete(req.params.id, {userFindAndModify:false}).exec(err=>{
+    if(err) this.console.log(err)
+    res.send("Delete Complete")
+  })
 
 }

@@ -7,11 +7,11 @@ export default {
         return {
             button              : "บันทึก",
             department          : [],
-            upline_option       : ["", "none"],
+            upline_option       : [null, "none"],
             department_option   : {
                 department_name   : null,
                 department_upline : null,
-                department_salary : "",
+                department_salary : null,
             },
         }
     },
@@ -19,35 +19,49 @@ export default {
         save () {
 
             services_department.create(this.department_option)
-            .then(function (response) {
+            .then((response) => {
+                this.find_all ()
                 console.log(response)
             })
-            .catch(function (error) {
+            .catch((error) => {
                 console.log(error);
             })  
 
             this.department_option = {
-                department_name: "",
-                department_upline: "",
-                department_salary: ""
-            }; 
-            this.$forceUpdate()
+                department_name: null,
+                department_upline: null,
+                department_salary: null
+            }
+            
+        },
+        delete_one (employee_id) {
+            
+            services_department.delete(employee_id)
+            .then((response) => {
+                this.find_all()
+                console.log(response.data)
+            })
+            .catch((error) => {
+                console.log(error)
+            })
+            
         },
         find_all () {
 
-            services_employee.getAll()
+            services_department.getAll()
             .then((response) => {
-                this.department   = response.data.department
-                this.page_option  = []
-                for (let i = this.page_start; i <= this.page_end ; i++) {
-                    this.page_option.push(i)
-                }
+                this.department = response.data
                 console.log(response.data)
             })
             .catch(function (error) {
                 console.log(error)
             })
+            this.$forceUpdate()
         },
+    },
+    mounted () {
+        this.find_all ()
+        this.$forceUpdate ()
     }
 }
 
@@ -55,6 +69,8 @@ export default {
 
 <template>
     <title>ตำแหน่งงาน</title>
+    {{ JSON.stringify(department) }}
+    {{ JSON.stringify(upline_option) }}
     <div class="container-xxl flex-grow-1 container-p-y">
         <h4 class="fw-bold py-3 mb-4">ตำแหน่งงาน</h4>
         <div class="d-flex">
@@ -87,7 +103,7 @@ export default {
                         >
                             <option :value="upline_option[0]">เลือกสายงาน</option>
                             <option :value="upline_option[1]">ตำแหน่งสูงสุด</option>
-                            <option :value="upline_option[2]">โปรแกรมเมอร์</option>
+                            <option v-for="(item, index) in department" :value="item._id">{{ item.department_name }}</option>
                         </select>
                         </div>
                         <div class="mb-3 col-md-4">
@@ -129,8 +145,15 @@ export default {
                 </tr>
             </thead>
             <tbody class="table-border-bottom-0 ">
-
-
+                <tr v-for="(item, index) in department">
+                    <td>{{ index + 1 }}</td>
+                    <td>{{ index + 1 }}</td>
+                    <td><button @click="detail(item._id)" class="bg-transparent border-0 text-primary">{{ item.department_name }}</button></td>
+                    <td>{{ item.department_salary }}</td>
+                    <td>
+                        <button @click="delete_one(item._id)" class="me-1 bg-transparent border-0"><i class="bx bx-trash me-1 font-22 text-primary"></i></button> 
+                    </td>
+                </tr>
             </tbody>
             </table>
 
