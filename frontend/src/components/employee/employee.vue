@@ -37,6 +37,7 @@ export default {
                 this.employee_department,
                 this.employee_tel
             )
+            console.log (params)
             services_employee.getAll(params)
             .then((response) => {
                 this.employee     = response.data.employee
@@ -97,7 +98,7 @@ export default {
 <template>
     <title>พนักงาน</title>
     {{ JSON.stringify(page) }}
-    {{ JSON.stringify(total_page) }}
+    {{ JSON.stringify(size) }}
     {{ JSON.stringify(employee_tel) }}
     <div class="container-xxl flex-grow-1 container-p-y">
         <h4 class="fw-bold py-3 mb-4">พนักงาน</h4>

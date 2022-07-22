@@ -5,10 +5,11 @@ export default {
     name: "Department",
     data () {
         return {
-            button              : "บันทึก",
+            form_type           : true,
             department          : [],
             upline_option       : [null, "none"],
             department_option   : {
+                department_id     : null,
                 department_name   : null,
                 department_upline : null,
                 department_salary : null,
@@ -28,9 +29,9 @@ export default {
             })  
 
             this.department_option = {
-                department_name: null,
-                department_upline: null,
-                department_salary: null
+                department_name     : null,
+                department_upline   : null,
+                department_salary   : null
             }
             
         },
@@ -58,6 +59,28 @@ export default {
             })
             this.$forceUpdate()
         },
+        edit (id) {
+
+            services_department.get(id)
+            .then((response) => {
+                this.department = response.data.department
+                this.form_type  = false
+                this.department_option = {
+                    department_id       : response.data.department_id,
+                    department_name     : response.data.department_name,
+                    department_upline   : response.data.department_upline,
+                    department_salary   : response.data.department_salary
+                }
+                console.log(response.data)
+            })
+            .catch(function (error) {
+                console.log(error)
+            })
+            this.$forceUpdate()
+        },
+        update () {
+            console.log ("Update !!!")
+        }
     },
     mounted () {
         this.find_all ()
@@ -69,8 +92,6 @@ export default {
 
 <template>
     <title>ตำแหน่งงาน</title>
-    {{ JSON.stringify(department) }}
-    {{ JSON.stringify(upline_option) }}
     <div class="container-xxl flex-grow-1 container-p-y">
         <h4 class="fw-bold py-3 mb-4">ตำแหน่งงาน</h4>
         <div class="d-flex">
@@ -79,6 +100,11 @@ export default {
         <div class="card mb-3">
             <div class="card-body">
                 <form id="formsubmit" @submit.prevent="save">
+                <input 
+                    type="hidden"
+                    name="department_id"
+                    v-model.trim="department_option.department_id"
+                >
                 <div class="row">
                     <div class="mb-3 col-md-4">
                         <label for="department_name" class="form-label">ตำแหน่ง</label>
@@ -121,7 +147,7 @@ export default {
 
                     </div>
                     <div class="mt-2">
-                        <button type="submit" class="btn btn-primary me-2">{{ button }}</button>
+                        <button type="submit" class="btn btn-primary me-2">บันทึก</button>
                         <button type="reset" class="btn btn-outline-secondary" >ยกเลิก</button>
                     </div>
                 </div>
@@ -148,7 +174,7 @@ export default {
                 <tr v-for="(item, index) in department">
                     <td>{{ index + 1 }}</td>
                     <td>{{ index + 1 }}</td>
-                    <td><button @click="detail(item._id)" class="bg-transparent border-0 text-primary">{{ item.department_name }}</button></td>
+                    <td><button @click="edit(item._id)" class="bg-transparent border-0 text-primary">{{ item.department_name }}</button></td>
                     <td>{{ item.department_salary }}</td>
                     <td>
                         <button @click="delete_one(item._id)" class="me-1 bg-transparent border-0"><i class="bx bx-trash me-1 font-22 text-primary"></i></button> 
