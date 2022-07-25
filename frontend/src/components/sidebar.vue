@@ -128,6 +128,12 @@ export default {
                 <div data-i18n="Support">ตำแหน่ง</div>
             </router-link>
         </li>
+        <li class="menu-item test">
+            <router-link to="/product_type" class="menu-link">
+                <i class="menu-icon tf-icons bx bx-support"></i>
+                ประเภทสินค้า
+            </router-link>
+        </li>
 
 
         </ul>

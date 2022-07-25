@@ -15,6 +15,11 @@ const router = createRouter({
       name: 'department',
       component: () => import('../components/department/department.vue')
     },
+    {
+      path: '/product_type',
+      name: 'product_type',
+      component: () => import('../components/product_type/index.vue')
+    },
     ...router_employee
   ]
 })
